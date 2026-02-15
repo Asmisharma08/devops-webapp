@@ -10,14 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Build Step
-      run: echo "Building project..."
+      - name: Build Step
+        run: echo "Building project..."
 
-    - name: Test Step
-      run: echo "Running tests..."
+      - name: Test Step
+        run: echo "Running tests..."
 
-    - name: Finish
-      run: echo "CI Pipeline Completed Successfully"
+      - name: Finish
+        run: echo "CI Pipeline Completed Successfully"
+
+      - name: Slack Notification
+        if: always()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"Build Status: ${{ job.status }}\"}" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
